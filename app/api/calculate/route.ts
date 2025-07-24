@@ -82,7 +82,7 @@ function calculateTips(formData: any) {
         tipsByPosition[emp.position].employees.push(emp);
       });
 
-      employeeResults = processedEmployees.map(emp => {
+      employeeResults = processedEmployees.map((emp: any) => {
         const posGroup = tipsByPosition[emp.position];
         const individualShare = posGroup.totalHours > 0 ? (emp.totalHours / posGroup.totalHours) * posGroup.totalShare : 0;
         return { ...emp, earnedTips: individualShare };
