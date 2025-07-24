@@ -3,6 +3,12 @@
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
+interface Employee {
+  id: number;
+  name: string;
+  position: string;
+}
+
 const scenarioOptions = [
   { id: 'hours-worked', name: 'Hours Worked' },
   { id: 'points-system', name: 'Points System' },
@@ -20,7 +26,17 @@ const positions = [
 
 export default function NewTemplatePage() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    templateName: string;
+    timeSpan: string;
+    employees: Employee[];
+    scenario: string;
+    scenarioDetails: {
+      points: Record<string, number>;
+      percentages: Record<string, number>;
+      hybridSplit: { hours: number; points: number };
+    };
+  }>({
     templateName: '',
     timeSpan: 'Weekly',
     employees: [],
@@ -52,34 +68,34 @@ export default function NewTemplatePage() {
     setNewEmployee({ name: '', position: '' }); // Reset the form
   };
 
-  const handleRemoveEmployee = (idToRemove) => {
+  const handleRemoveEmployee = (idToRemove: number) => {
     setFormData(prev => ({
         ...prev,
         employees: prev.employees.filter(emp => emp.id !== idToRemove)
     }));
   };
 
-  const handleScenarioSelect = (id) => {
+  const handleScenarioSelect = (id: string) => {
     setFormData(prev => ({
       ...prev,
       scenario: id,
     }));
   };
 
-  const handleDetailChange = (type, key, value) => {
+  const handleDetailChange = (type: string, key: string, value: string) => {
     setFormData(prev => ({
       ...prev,
       scenarioDetails: {
         ...prev.scenarioDetails,
         [type]: {
-          ...prev.scenarioDetails[type],
+          ...(prev.scenarioDetails[type as keyof typeof prev.scenarioDetails] as Record<string, number>),
           [key]: parseFloat(value) || 0
         }
       }
     }));
   };
 
-  const handleHybridSplitChange = (part, value) => {
+  const handleHybridSplitChange = (part: string, value: string) => {
     const val = parseFloat(value) || 0;
     const otherPart = part === 'hours' ? 'points' : 'hours';
     setFormData(prev => ({
@@ -120,7 +136,7 @@ export default function NewTemplatePage() {
       router.push('/templates');
     } catch (err) {
       console.error(err);
-      setError(err.message);
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
     }
   };
 
@@ -162,7 +178,7 @@ export default function NewTemplatePage() {
         <div className="card bg-base-100 shadow-md p-6">
             <h2 className="text-xl font-semibold mb-4">Employee Roster</h2>
             <div className="space-y-2 mb-4">
-                {formData.employees.map((emp) => (
+                {formData.employees.map((emp: Employee) => (
                   <div key={emp.id} className="flex justify-between items-center bg-gray-50 p-2 rounded">
                     <span>{emp.name} - <span className="text-gray-600">{emp.position}</span></span>
                     <button onClick={() => handleRemoveEmployee(emp.id)} className="btn btn-xs btn-error btn-outline">Remove</button>
