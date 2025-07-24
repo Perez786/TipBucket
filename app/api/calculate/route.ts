@@ -71,7 +71,7 @@ function calculateTips(formData: any) {
     case 'percentage-split':
     case 'tip-out':
       const tipsByPosition = {};
-      processedEmployees.forEach(emp => {
+      processedEmployees.forEach((emp: any) => {
         const percentage = parseFloat(scenarioDetails.percentages?.[emp.position]) || 0;
         const share = (percentage / 100) * totalTipPool;
         if (!tipsByPosition[emp.position]) {
