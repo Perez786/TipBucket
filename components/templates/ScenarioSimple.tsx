@@ -1,6 +1,27 @@
 'use client';
 import { useMemo } from 'react';
 
+interface Employee {
+  id: number;
+  name: string;
+  position: string;
+  daysWorked?: { [day: string]: number };
+}
+
+interface ScenarioDetails {
+  points?: { [key: string]: number };
+  percentages?: { [key: string]: number };
+  hybridSplit?: { hours: number; points: number };
+}
+
+interface ScenarioSimpleProps {
+  employees: Employee[];
+  scenario: string;
+  setScenario: (scenario: string) => void;
+  scenarioDetails: ScenarioDetails;
+  setScenarioDetails: (details: ScenarioDetails | ((prev: ScenarioDetails) => ScenarioDetails)) => void;
+}
+
 const scenarioOptions = [
   { id: 'hours-worked', name: 'Hours Worked' },
   { id: 'points-system', name: 'Points System' },
@@ -9,7 +30,7 @@ const scenarioOptions = [
   { id: 'hybrid', name: 'Hybrid Model' },
 ];
 
-export default function ScenarioSimple({ employees, scenario, setScenario, scenarioDetails, setScenarioDetails }) {
+export default function ScenarioSimple({ employees, scenario, setScenario, scenarioDetails, setScenarioDetails }: ScenarioSimpleProps) {
 // This is a "guard clause". If employees is not a valid array, it stops right here.
   if (!Array.isArray(employees)) {
     return null; // or return a loading indicator, or an empty div
@@ -19,7 +40,7 @@ export default function ScenarioSimple({ employees, scenario, setScenario, scena
     [...new Set(employees.map(emp => emp.position).filter(Boolean))]
   , [employees]);
 
-  const handleDetailChange = (type, key, value) => {
+  const handleDetailChange = (type: 'points' | 'percentages', key: string, value: string) => {
     setScenarioDetails(prev => ({
       ...prev,
       [type]: { ...prev[type], [key]: value }
