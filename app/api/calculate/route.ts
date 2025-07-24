@@ -55,7 +55,7 @@ function calculateTips(formData: any) {
 
   switch (scenario) {
     case 'hours-worked':
-      employeeResults = processedEmployees.map(emp => ({
+      employeeResults = processedEmployees.map((emp: any) => ({
         ...emp,
         earnedTips: totalHoursWorked > 0 ? (emp.totalHours / totalHoursWorked) * totalTipPool : 0,
       }));
