@@ -65,7 +65,7 @@ const EmployeeData: React.FC<TemplateEmployeeDataProps> = ({ formData, setFormDa
               <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2">
                 {dayKeys.map((dayKey, index) => {
                     const dayIndex = index + 1; // 1-based index for display
-                    const isChecked = !!employee.daysWorked[dayKey];
+                    const isChecked = employee.daysWorked.hasOwnProperty(dayKey);
                     
                     // THIS IS THE CORRECTED NAMING CONVENTION
                     const dayName = dayNames[index % 7];
@@ -86,7 +86,7 @@ const EmployeeData: React.FC<TemplateEmployeeDataProps> = ({ formData, setFormDa
                                 <input 
                                     type="number" 
                                     placeholder="Hours"
-                                    defaultValue={employee.daysWorked[dayKey] || ''}
+                                    value={employee.daysWorked[dayKey] || ''}
                                     onChange={(e) => handleHoursChange(employee.id, dayKey, e.target.value)}
                                     className="input input-bordered input-sm w-full mt-1" 
                                 />

@@ -40,7 +40,7 @@ function calculateTips(formData: any) {
   let totalPointsEarned = 0;
 
   const processedEmployees = employees.map((emp: any) => {
-    const hours = Object.values(emp.daysWorked).reduce((acc: number, day: any) => acc + (day.hours || 0), 0);
+    const hours = Object.values(emp.daysWorked).reduce((acc: number, day: any) => acc + (day || 0), 0);
     const pointsRate = parseFloat(scenarioDetails.points?.[emp.position]) || 0;
     const points = hours * pointsRate;
 
@@ -180,13 +180,13 @@ Object.entries(dailyTips).forEach(([dayKey, dayTips]: [string, any], i) => {
 
   const employeesForDay = employeeResults.filter((emp: any) => emp.daysWorked?.[dayKey]);
   const totalHours = employeesForDay.reduce(
-    (acc: number, emp: any) => acc + (emp.daysWorked[dayKey]?.hours || 0),
+    (acc: number, emp: any) => acc + (emp.daysWorked[dayKey] || 0),
     0
   );
   const hourlyRate = totalHours > 0 ? totalTips / totalHours : 0;
 
 const employeeDetails = employeesForDay.map((emp: any) => {
-  const hoursWorked = emp.daysWorked[dayKey]?.hours || 0;
+  const hoursWorked = emp.daysWorked[dayKey] || 0;
   const tipRatio = emp.earnedTips / totalTipPool; // Use full earnedTips—not daily hours
   return {
     name: emp.name,

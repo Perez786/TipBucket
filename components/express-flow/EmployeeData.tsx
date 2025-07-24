@@ -105,17 +105,17 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ formData, setFormData, next
                     <input
                       type="checkbox"
                       id={`day-${employee.id}-${dayIndex}`}
-                      checked={!!employee.daysWorked[dayIndex.toString()]}
-                      onChange={(e) => handleDayChange(employee.id, dayIndex.toString(), e.target.checked)}
+                      checked={!!employee.daysWorked[`day${dayIndex + 1}`]}
+                      onChange={(e) => handleDayChange(employee.id, `day${dayIndex + 1}`, e.target.checked)}
                       className="h-4 w-4 text-primary focus:ring-highlight border-gray-300 rounded"
                     />
                     <label htmlFor={`day-${employee.id}-${dayIndex}`} className="ml-2 text-sm">{day}</label>
-                    {employee.daysWorked[dayIndex.toString()] !== undefined && (
+                    {employee.daysWorked[`day${dayIndex + 1}`] !== undefined && (
                       <input
                         type="number"
                         placeholder="Hrs"
-                        value={employee.daysWorked[dayIndex.toString()]}
-                        onChange={(e) => handleHoursChange(employee.id, dayIndex.toString(), e.target.value)}
+                        value={employee.daysWorked[`day${dayIndex + 1}`]}
+                        onChange={(e) => handleHoursChange(employee.id, `day${dayIndex + 1}`, e.target.value)}
                         className="w-16 ml-2 px-2 py-1 border border-gray-300 rounded-md text-sm"
                       />
                     )}
