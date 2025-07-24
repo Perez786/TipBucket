@@ -160,7 +160,7 @@ employeeResults = employeeResults.map((emp: any) => {
     posData.totalHours += emp.totalHours;
   });
 
-  Object.values(positionSummary).forEach(pos => {
+  Object.values(positionSummary).forEach((pos: any) => {
     pos.hourlyRate = pos.totalHours > 0 ? pos.totalTips / pos.totalHours : 0;
   });
 
