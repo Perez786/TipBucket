@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import { ScenarioProps } from '../../types';
 
 const scenarioOptions = [
   { id: 'hours-worked', name: 'Hours Worked' },
@@ -10,7 +11,11 @@ const scenarioOptions = [
   { id: 'hybrid', name: 'Hybrid Model' },
 ];
 
-const Scenario = ({ formData, setFormData, nextStep, prevStep, submitButtonText = 'Calculate Tips' }) => {
+interface ScenarioComponentProps extends ScenarioProps {
+  submitButtonText?: string;
+}
+
+const Scenario: React.FC<ScenarioComponentProps> = ({ formData, setFormData, nextStep, prevStep, submitButtonText = 'Calculate Tips' }) => {
   const [selectedScenario, setSelectedScenario] = useState(formData.scenario || '');
   const [details, setDetails] = useState(formData.scenarioDetails || { points: {}, percentages: {}, hybridSplit: { hours: 70, points: 30 } });
 
@@ -18,14 +23,14 @@ const Scenario = ({ formData, setFormData, nextStep, prevStep, submitButtonText 
     [...new Set(formData.employees.map(emp => emp.position).filter(Boolean))]
   , [formData.employees]);
 
-  const handleDetailChange = (type, key, value) => {
+  const handleDetailChange = (type: string, key: string, value: string) => {
     setDetails(prev => ({
       ...prev,
-      [type]: { ...prev[type], [key]: value }
+      [type]: { ...(prev[type as keyof typeof prev] as Record<string, number>), [key]: parseFloat(value) || 0 }
     }));
   };
 
-  const handleHybridSplitChange = (part, value) => {
+  const handleHybridSplitChange = (part: string, value: string) => {
     const val = parseInt(value, 10) || 0;
     const otherPart = part === 'hours' ? 'points' : 'hours';
     setDetails(prev => ({

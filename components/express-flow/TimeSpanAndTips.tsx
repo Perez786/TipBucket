@@ -1,16 +1,17 @@
 'use client';
 
 import React from 'react';
+import { TimeSpanAndTipsProps } from '../../types';
 
-const TimeSpanAndTips = ({ formData, setFormData, nextStep }) => {
+const TimeSpanAndTips: React.FC<TimeSpanAndTipsProps> = ({ formData, setFormData, nextStep }) => {
   const days = formData.timeSpan === 'Weekly' ? 7 : 14;
   const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-  const handleTimeSpanChange = (e) => {
-    setFormData({ ...formData, timeSpan: e.target.value, dailyTips: {} });
+  const handleTimeSpanChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData({ ...formData, timeSpan: e.target.value as 'Weekly' | 'Bi-Weekly', dailyTips: {} });
   };
 
-  const handleTipChange = (dayIndex, tipType, value) => {
+  const handleTipChange = (dayIndex: number, tipType: string, value: string) => {
     const dayKey = `day${dayIndex + 1}`;
     const updatedDailyTips = {
       ...formData.dailyTips,

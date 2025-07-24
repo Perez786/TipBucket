@@ -1,13 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { FormData } from '../../types';
 import TimeSpanAndTips from '@/components/express-flow/TimeSpanAndTips';
 import EmployeeData from '@/components/express-flow/EmployeeData';
 import Scenario from '@/components/express-flow/Scenario';
 import ResultsPage from '@/components/express-flow/ResultsPage';
 
-const initialFormData = {
-  timeSpan: 'Weekly',
+const initialFormData: FormData = {
+  timeSpan: 'Weekly' as 'Weekly' | 'Bi-Weekly',
   dailyTips: {},
   employees: [],
   scenario: '',
@@ -17,7 +18,7 @@ const initialFormData = {
 
 export default function ExpressPage() { // Renamed from DashboardPage to ExpressPage
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState(initialFormData);
+  const [formData, setFormData] = useState<FormData>(initialFormData);
   const [results, setResults] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
