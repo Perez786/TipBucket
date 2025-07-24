@@ -49,13 +49,13 @@ export default function EditTemplatePage() {
     fetchTemplate();
   }, [templateId]);
 
-  const employeePositions = useMemo(() => {
+  const employeePositions = useMemo((): string[] => {
     if (!formData?.employees) return [];
-    return [...new Set(formData.employees.map(emp => emp.position).filter(Boolean))];
+    return [...new Set(formData.employees.map((emp: any) => emp.position).filter(Boolean))] as string[];
   }, [formData?.employees]);
 
-  const handleFormChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const handleFormChange = (field: string, value: any) => {
+    setFormData((prev: any) => ({ ...prev, [field]: value }));
   };
   
   const handleAddEmployee = () => {
@@ -64,11 +64,11 @@ export default function EditTemplatePage() {
     setNewEmployee({ name: '', position: '' });
   };
   
-  const handleRemoveEmployee = (idToRemove) => {
-    handleFormChange('employees', formData.employees.filter(emp => emp.id !== idToRemove));
+  const handleRemoveEmployee = (idToRemove: number) => {
+    handleFormChange('employees', formData.employees.filter((emp: any) => emp.id !== idToRemove));
   };
   
-  const handleDetailChange = (type, key, value) => {
+  const handleDetailChange = (type: string, key: string, value: string) => {
     handleFormChange('scenarioDetails', {
       ...formData.scenarioDetails,
       [type]: {
@@ -188,10 +188,10 @@ export default function EditTemplatePage() {
               <div className="p-4 border rounded-lg bg-green-50">
                 <h4 className="font-semibold text-lg mb-3">Assign Points</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  {employeePositions.map(pos => (
-                    <div key={pos}>
+                  {employeePositions.map((pos: string) => (
+                     <div key={pos}>
                       <label className="block text-sm font-medium">{pos}</label>
-                      <input type="number" placeholder="e.g., 10" value={formData.scenarioDetails.points?.[pos] || ''} onChange={(e) => handleDetailChange('points', pos, e.target.value)} className="w-full px-3 py-2 border rounded-md"/>
+                       <input type="number" placeholder="e.g., 10" value={(formData.scenarioDetails.points as any)?.[pos] || ''} onChange={(e) => handleDetailChange('points', pos, e.target.value)} className="w-full px-3 py-2 border rounded-md"/>
                     </div>
                   ))}
                 </div>
@@ -201,10 +201,10 @@ export default function EditTemplatePage() {
               <div className="p-4 border rounded-lg bg-purple-50">
                 <h4 className="font-semibold text-lg mb-3">Assign Percentages</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  {employeePositions.map(pos => (
-                    <div key={pos}>
+                  {employeePositions.map((pos: string) => (
+                     <div key={pos}>
                       <label className="block text-sm font-medium">{pos} (%)</label>
-                      <input type="number" placeholder="e.g., 20" value={formData.scenarioDetails.percentages?.[pos] || ''} onChange={(e) => handleDetailChange('percentages', pos, e.target.value)} className="w-full px-3 py-2 border rounded-md"/>
+                       <input type="number" placeholder="e.g., 20" value={(formData.scenarioDetails.percentages as any)?.[pos] || ''} onChange={(e) => handleDetailChange('percentages', pos, e.target.value)} className="w-full px-3 py-2 border rounded-md"/>
                     </div>
                   ))}
                 </div>
