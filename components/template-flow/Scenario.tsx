@@ -2,6 +2,34 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 
+interface Employee {
+  id: number;
+  name: string;
+  position: string;
+  daysWorked: { [day: string]: number };
+}
+
+interface FormData {
+  employees: Employee[];
+  dailyTips: { [day: string]: { creditCardTips: number; cashTips: number; serviceChargeTips: number } };
+  timeSpan: 'Weekly' | 'Bi-Weekly';
+  scenario: string;
+  scenarioDetails: {
+    points?: { [key: string]: number };
+    percentages?: { [key: string]: number };
+    hybridSplit?: { hours: number; points: number };
+  };
+  templateName?: string;
+}
+
+interface ScenarioProps {
+  formData: FormData;
+  setFormData: (data: FormData) => void;
+  nextStep: () => void;
+  prevStep: () => void;
+  submitButtonText?: string;
+}
+
 const scenarioOptions = [
   { id: 'hours-worked', name: 'Hours Worked' },
   { id: 'points-system', name: 'Points System' },
@@ -10,7 +38,7 @@ const scenarioOptions = [
   { id: 'hybrid', name: 'Hybrid Model' },
 ];
 
-const Scenario = ({ formData, setFormData, nextStep, prevStep, submitButtonText = 'Calculate Tips' }) => {
+const Scenario: React.FC<ScenarioProps> = ({ formData, setFormData, nextStep, prevStep, submitButtonText = 'Calculate Tips' }) => {
   const [selectedScenario, setSelectedScenario] = useState(formData.scenario || '');
   const [details, setDetails] = useState(formData.scenarioDetails || {
     points: {},
@@ -31,7 +59,7 @@ const Scenario = ({ formData, setFormData, nextStep, prevStep, submitButtonText 
     console.log("Details:", details);
   }, [selectedScenario, employeePositions, details]);
 
-  const handleDetailChange = (type, key, value) => {
+  const handleDetailChange = (type: 'points' | 'percentages', key: string, value: string) => {
     setDetails(prev => ({
       ...prev,
       [type]: {
@@ -41,15 +69,14 @@ const Scenario = ({ formData, setFormData, nextStep, prevStep, submitButtonText 
     }));
   };
 
-  const handleHybridSplitChange = (part, value) => {
+  const handleHybridSplitChange = (part: 'hours' | 'points', value: string) => {
     const val = parseFloat(value) || 0;
     const otherPart = part === 'hours' ? 'points' : 'hours';
     setDetails(prev => ({
       ...prev,
       hybridSplit: {
-        ...prev.hybridSplit,
-        [part]: val,
-        [otherPart]: Math.max(0, 100 - val)
+        hours: part === 'hours' ? val : Math.max(0, 100 - val),
+        points: part === 'points' ? val : Math.max(0, 100 - val)
       }
     }));
   };
@@ -74,7 +101,7 @@ const Scenario = ({ formData, setFormData, nextStep, prevStep, submitButtonText 
                 <label className="block text-sm font-medium">Split by Hours (%)</label>
                 <input 
                   type="number"
-                  value={details.hybridSplit.hours}
+                  value={details.hybridSplit?.hours || 0}
                   onChange={(e) => handleHybridSplitChange('hours', e.target.value)}
                   className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md"
                 />
@@ -83,7 +110,7 @@ const Scenario = ({ formData, setFormData, nextStep, prevStep, submitButtonText 
                 <label className="block text-sm font-medium">Split by Points (%)</label>
                 <input 
                   type="number"
-                  value={details.hybridSplit.points}
+                  value={details.hybridSplit?.points || 0}
                   onChange={(e) => handleHybridSplitChange('points', e.target.value)}
                   className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md"
                 />
@@ -102,7 +129,7 @@ const Scenario = ({ formData, setFormData, nextStep, prevStep, submitButtonText 
                   <input 
                     type="number"
                     placeholder="e.g., 10"
-                    value={details.points[pos] ?? ''}
+                    value={details.points?.[pos] ?? ''}
                     onChange={(e) => handleDetailChange('points', pos, e.target.value)}
                     className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md"
                   />
@@ -122,7 +149,7 @@ const Scenario = ({ formData, setFormData, nextStep, prevStep, submitButtonText 
                   <input 
                     type="number"
                     placeholder="e.g., 20"
-                    value={details.percentages[pos] ?? ''}
+                    value={details.percentages?.[pos] ?? ''}
                     onChange={(e) => handleDetailChange('percentages', pos, e.target.value)}
                     className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md"
                   />

@@ -2,7 +2,39 @@
 
 import React from 'react';
 
-const TimeSpanAndTips = ({ formData, setFormData, nextStep }) => {
+interface Employee {
+  id: number;
+  name: string;
+  position: string;
+  daysWorked: { [day: string]: number };
+}
+
+interface DailyTips {
+  creditCardTips: number;
+  cashTips: number;
+  serviceChargeTips: number;
+}
+
+interface FormData {
+  employees: Employee[];
+  dailyTips: { [day: string]: DailyTips };
+  timeSpan: 'Weekly' | 'Bi-Weekly';
+  scenario: string;
+  scenarioDetails: {
+    points?: { [key: string]: number };
+    percentages?: { [key: string]: number };
+    hybridSplit?: { hours: number; points: number };
+  };
+  templateName?: string;
+}
+
+interface TimeSpanAndTipsProps {
+  formData: FormData;
+  setFormData: (data: FormData) => void;
+  nextStep: () => void;
+}
+
+const TimeSpanAndTips: React.FC<TimeSpanAndTipsProps> = ({ formData, setFormData, nextStep }) => {
   if (!formData || !formData.dailyTips) {
     return (
       <div className="text-center">
@@ -14,7 +46,7 @@ const TimeSpanAndTips = ({ formData, setFormData, nextStep }) => {
   const days = formData.timeSpan === 'Weekly' ? 7 : 14;
   const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-  const handleTipChange = (dayKey, field, value) => {
+  const handleTipChange = (dayKey: string, field: keyof DailyTips, value: string) => {
     const updatedDailyTips = {
       ...formData.dailyTips,
       [dayKey]: {
