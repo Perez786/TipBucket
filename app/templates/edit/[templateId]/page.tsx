@@ -35,13 +35,13 @@ export default function EditTemplatePage() {
         const response = await fetch(`/api/templates/${templateId}`);
         if (!response.ok) throw new Error('Template not found');
         const data = await response.json();
-        const employeesWithIds = data.employees.map((emp, index) => ({
+        const employeesWithIds = data.employees.map((emp: any, index) => ({
           ...emp,
           id: emp.id || Date.now() + index,
         }));
         setFormData({ ...data, employees: employeesWithIds });
       } catch (err) {
-        setError(err.message);
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
       } finally {
         setIsLoading(false);
       }
@@ -90,7 +90,7 @@ export default function EditTemplatePage() {
         if (!response.ok) throw new Error("Failed to save changes.");
         router.push('/templates');
     } catch(err) {
-        setError(err.message);
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
         setIsSaving(false);
     }
