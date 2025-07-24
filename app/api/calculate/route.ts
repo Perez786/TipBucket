@@ -137,9 +137,9 @@ employeeResults = employeeResults.map((emp: any) => {
   };
 
   // 6. Position-Level Breakdown
-  const positionSummary = {};
+  const positionSummary: any = {};
 
-  employeeResults.forEach(emp => {
+  employeeResults.forEach((emp: any) => {
     if (!positionSummary[emp.position]) {
       positionSummary[emp.position] = {
         position: emp.position,
