@@ -35,7 +35,7 @@ export default function EditTemplatePage() {
         const response = await fetch(`/api/templates/${templateId}`);
         if (!response.ok) throw new Error('Template not found');
         const data = await response.json();
-        const employeesWithIds = data.employees.map((emp: any, index) => ({
+        const employeesWithIds = data.employees.map((emp: any, index: number) => ({
           ...emp,
           id: emp.id || Date.now() + index,
         }));
