@@ -77,7 +77,7 @@ function calculateTips(formData: any) {
         if (!tipsByPosition[emp.position]) {
           tipsByPosition[emp.position] = { totalHours: 0, employees: [], totalShare: 0 };
         }
-        tipsByPosition[emp.position].totalShare += share / employees.filter(e => e.position === emp.position).length;
+        tipsByPosition[emp.position].totalShare += share / employees.filter((e: any) => e.position === emp.position).length;
         tipsByPosition[emp.position].totalHours += emp.totalHours;
         tipsByPosition[emp.position].employees.push(emp);
       });
