@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   }
 }
 
-function calculateTips(formData) {
+function calculateTips(formData: any) {
   const { employees, dailyTips, scenario, scenarioDetails } = formData;
 
   // 1. Calculate Total Tip Pool & Tip Types
