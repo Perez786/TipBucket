@@ -2,12 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-
-interface Employee {
-  id: number;
-  name: string;
-  position: string;
-}
+import { Employee, TemplateFormData } from '../../../types';
 
 const scenarioOptions = [
   { id: 'hours-worked', name: 'Hours Worked' },
@@ -26,17 +21,7 @@ const positions = [
 
 export default function NewTemplatePage() {
   const router = useRouter();
-  const [formData, setFormData] = useState<{
-    templateName: string;
-    timeSpan: string;
-    employees: Employee[];
-    scenario: string;
-    scenarioDetails: {
-      points: Record<string, number>;
-      percentages: Record<string, number>;
-      hybridSplit: { hours: number; points: number };
-    };
-  }>({
+  const [formData, setFormData] = useState<TemplateFormData>({
     templateName: '',
     timeSpan: 'Weekly',
     employees: [],
@@ -63,7 +48,7 @@ export default function NewTemplatePage() {
     setError('');
     setFormData(prev => ({
       ...prev,
-      employees: [...prev.employees, { ...newEmployee, id: Date.now() }] // Add a temporary ID for the key
+      employees: [...prev.employees, { ...newEmployee, id: Date.now(), daysWorked: {} }] // Add a temporary ID and daysWorked
     }));
     setNewEmployee({ name: '', position: '' }); // Reset the form
   };
@@ -164,7 +149,7 @@ export default function NewTemplatePage() {
               <label className="label"><span className="label-text font-semibold">Time Span</span></label>
               <select
                 value={formData.timeSpan}
-                onChange={(e) => setFormData({ ...formData, timeSpan: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, timeSpan: e.target.value as 'Weekly' | 'Bi-Weekly' })}
                 className="select select-bordered w-full"
               >
                 <option value="Weekly">Weekly</option>

@@ -1,12 +1,7 @@
 'use client';
 import { useState, useEffect, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-
-interface Employee {
-  id: number;
-  name: string;
-  position: string;
-}
+import { Employee, TemplateFormData } from '../../../../types';
 
 const scenarioOptions = [
   { id: 'hours-worked', name: 'Hours Worked' },
@@ -27,7 +22,7 @@ export default function EditTemplatePage() {
   const params = useParams();
   const { templateId } = params;
   
-  const [formData, setFormData] = useState<any>(null);
+  const [formData, setFormData] = useState<TemplateFormData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState('');
@@ -44,6 +39,7 @@ export default function EditTemplatePage() {
         const employeesWithIds = data.employees.map((emp: any, index: number) => ({
           ...emp,
           id: emp.id || Date.now() + index,
+          daysWorked: emp.daysWorked || {}
         }));
         setFormData({ ...data, employees: employeesWithIds });
       } catch (err) {
@@ -61,26 +57,34 @@ export default function EditTemplatePage() {
   }, [formData?.employees]);
 
   const handleFormChange = (field: string, value: any) => {
-    setFormData((prev: any) => ({ ...prev, [field]: value }));
+    if (!formData) return;
+    setFormData(prev => prev ? ({ ...prev, [field]: value }) : null);
   };
   
   const handleAddEmployee = () => {
-    if (!newEmployee.name || !newEmployee.position) return;
-    handleFormChange('employees', [...formData.employees, { ...newEmployee, id: Date.now() }]);
+    if (!formData || !newEmployee.name || !newEmployee.position) return;
+    handleFormChange('employees', [...formData.employees, { ...newEmployee, id: Date.now(), daysWorked: {} }]);
     setNewEmployee({ name: '', position: '' });
   };
   
   const handleRemoveEmployee = (idToRemove: number) => {
+    if (!formData) return;
     handleFormChange('employees', formData.employees.filter((emp: Employee) => emp.id !== idToRemove));
   };
   
   const handleDetailChange = (type: string, key: string, value: string) => {
-    handleFormChange('scenarioDetails', {
-      ...formData.scenarioDetails,
-      [type]: {
-        ...formData.scenarioDetails[type],
-        [key]: parseFloat(value) || 0,
-      }
+    setFormData(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        scenarioDetails: {
+          ...prev.scenarioDetails,
+          [type]: {
+            ...(prev.scenarioDetails[type as keyof typeof prev.scenarioDetails] as Record<string, number>),
+            [key]: parseFloat(value) || 0,
+          }
+        }
+      };
     });
   };
 

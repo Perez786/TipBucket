@@ -1,25 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-
-interface Employee {
-  id: number;
-  name: string;
-  position: string;
-  daysWorked: { [day: string]: { hours: number | string } };
-}
-
-interface EmployeeDataProps {
-  formData: {
-    employees: Employee[];
-    timeSpan: 'Weekly' | 'Bi-Weekly';
-    [key: string]: any; // for other fields that might be present
-  };
-  setFormData: (data: any) => void;
-  nextStep: () => void;
-  prevStep: () => void;
-  isTemplateMode?: boolean;
-}
+import { Employee, FormData, EmployeeDataProps } from '../../types';
 
 const positionOptions = [
   "Bartender", "Lead Bartender", "Barback", "Lead Barback", "Server", 
@@ -28,7 +10,7 @@ const positionOptions = [
 ];
 
 const EmployeeData: React.FC<EmployeeDataProps> = ({ formData, setFormData, nextStep, prevStep, isTemplateMode = false }) => {
-  const [employees, setEmployees] = useState(formData.employees.length > 0 ? formData.employees : [{ id: 1, name: '', position: '', daysWorked: {} }]);
+  const [employees, setEmployees] = useState<Employee[]>(formData.employees.length > 0 ? formData.employees : [{ id: 1, name: '', position: '', daysWorked: {} }]);
   const dayNames = !isTemplateMode ? [...Array(formData.timeSpan === 'Weekly' ? 7 : 14)].map((_, i) => { 
     const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']; 
     const weekday = weekdays[i % 7];
@@ -55,7 +37,7 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ formData, setFormData, next
       if (emp.id === empId) {
         const newDaysWorked = { ...emp.daysWorked };
         if (isChecked) {
-          newDaysWorked[dayIndex] = { hours: 0 };
+          newDaysWorked[dayIndex] = 0;
         } else {
           delete newDaysWorked[dayIndex];
         }
@@ -71,7 +53,7 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ formData, setFormData, next
       if (emp.id === empId) {
         const newDaysWorked = { 
           ...emp.daysWorked,
-          [dayIndex]: { hours: parseFloat(hours) || 0 }
+          [dayIndex]: parseFloat(hours) || 0
         };
         return { ...emp, daysWorked: newDaysWorked };
       }
@@ -123,16 +105,16 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ formData, setFormData, next
                     <input
                       type="checkbox"
                       id={`day-${employee.id}-${dayIndex}`}
-                      checked={!!employee.daysWorked[dayIndex]}
+                      checked={!!employee.daysWorked[dayIndex.toString()]}
                       onChange={(e) => handleDayChange(employee.id, dayIndex.toString(), e.target.checked)}
                       className="h-4 w-4 text-primary focus:ring-highlight border-gray-300 rounded"
                     />
                     <label htmlFor={`day-${employee.id}-${dayIndex}`} className="ml-2 text-sm">{day}</label>
-                    {employee.daysWorked[dayIndex] && (
+                    {employee.daysWorked[dayIndex.toString()] !== undefined && (
                       <input
                         type="number"
                         placeholder="Hrs"
-                        value={employee.daysWorked[dayIndex].hours}
+                        value={employee.daysWorked[dayIndex.toString()]}
                         onChange={(e) => handleHoursChange(employee.id, dayIndex.toString(), e.target.value)}
                         className="w-16 ml-2 px-2 py-1 border border-gray-300 rounded-md text-sm"
                       />
