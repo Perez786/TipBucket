@@ -1,6 +1,16 @@
 'use client';
 
-const EmployeeData = ({ formData, setFormData, onCalculate, prevStep }) => {
+import { FormData } from '../../types';
+import React from 'react';
+
+interface TemplateEmployeeDataProps {
+  formData: FormData;
+  setFormData: (data: FormData) => void;
+  onCalculate: () => void;
+  prevStep: () => void;
+}
+
+const EmployeeData: React.FC<TemplateEmployeeDataProps> = ({ formData, setFormData, onCalculate, prevStep }) => {
   // Guard clause to ensure all necessary data is loaded before rendering
   if (!formData || !formData.employees || !formData.dailyTips) {
     return <div className="text-center p-10"><span className="loading loading-spinner"></span></div>;
@@ -11,12 +21,12 @@ const EmployeeData = ({ formData, setFormData, onCalculate, prevStep }) => {
   const dayKeys = Object.keys(formData.dailyTips);
 
   // This function handles when a day's checkbox is checked or unchecked
-  const handleDayChange = (employeeId, dayKey, isChecked) => {
+  const handleDayChange = (employeeId: number, dayKey: string, isChecked: boolean) => {
     const updatedEmployees = formData.employees.map(emp => {
       if (emp.id === employeeId) {
         const newDaysWorked = { ...emp.daysWorked };
         if (isChecked) {
-          newDaysWorked[dayKey] = { hours: '' }; // Start with empty string for placeholder
+          newDaysWorked[dayKey] = 0; // Start with 0 hours
         } else {
           delete newDaysWorked[dayKey];
         }
@@ -28,11 +38,11 @@ const EmployeeData = ({ formData, setFormData, onCalculate, prevStep }) => {
   };
 
   // This function handles changes to the hours input field
-  const handleHoursChange = (employeeId, dayKey, hours) => {
+  const handleHoursChange = (employeeId: number, dayKey: string, hours: string) => {
     const updatedEmployees = formData.employees.map(emp => {
       if (emp.id === employeeId) {
         const newDaysWorked = { ...emp.daysWorked };
-        newDaysWorked[dayKey] = { hours: parseFloat(hours) || 0 };
+        newDaysWorked[dayKey] = parseFloat(hours) || 0;
         return { ...emp, daysWorked: newDaysWorked };
       }
       return emp;
@@ -76,7 +86,7 @@ const EmployeeData = ({ formData, setFormData, onCalculate, prevStep }) => {
                                 <input 
                                     type="number" 
                                     placeholder="Hours"
-                                    // defaultValue={employee.daysWorked[dayKey]?.hours || ''}
+                                    defaultValue={employee.daysWorked[dayKey] || ''}
                                     onChange={(e) => handleHoursChange(employee.id, dayKey, e.target.value)}
                                     className="input input-bordered input-sm w-full mt-1" 
                                 />
