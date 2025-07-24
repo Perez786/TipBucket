@@ -178,14 +178,14 @@ Object.entries(dailyTips).forEach(([dayKey, dayTips]: [string, any], i) => {
   const serviceChargeTips = dayTips.serviceChargeTips || 0;
   const totalTips = creditCardTips + cashTips + serviceChargeTips;
 
-  const employeesForDay = employeeResults.filter(emp => emp.daysWorked?.[dayKey]);
+  const employeesForDay = employeeResults.filter((emp: any) => emp.daysWorked?.[dayKey]);
   const totalHours = employeesForDay.reduce(
-    (acc, emp) => acc + (emp.daysWorked[dayKey]?.hours || 0),
+    (acc: number, emp: any) => acc + (emp.daysWorked[dayKey]?.hours || 0),
     0
   );
   const hourlyRate = totalHours > 0 ? totalTips / totalHours : 0;
 
-const employeeDetails = employeesForDay.map(emp => {
+const employeeDetails = employeesForDay.map((emp: any) => {
   const hoursWorked = emp.daysWorked[dayKey]?.hours || 0;
   const tipRatio = emp.earnedTips / totalTipPool; // Use full earnedTips—not daily hours
   return {
