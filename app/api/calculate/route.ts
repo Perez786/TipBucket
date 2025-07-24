@@ -39,7 +39,7 @@ function calculateTips(formData: any) {
   let totalHoursWorked = 0;
   let totalPointsEarned = 0;
 
-  const processedEmployees = employees.map(emp => {
+  const processedEmployees = employees.map((emp: any) => {
     const hours = Object.values(emp.daysWorked).reduce((acc, day) => acc + (day.hours || 0), 0);
     const pointsRate = parseFloat(scenarioDetails.points?.[emp.position]) || 0;
     const points = hours * pointsRate;
