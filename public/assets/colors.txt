@@ -1,0 +1,20 @@
+Logo Color Palette/Font: Below are the colors and font used to make the logo
+-Light Green
+Hex: #85a78f
+RGB: (133,167,143)
+CMYK: (20%, 0%, 14%, 35%)
+
+-Dark Green
+Hex: #2d585d
+RGB: (133, 167, 143)
+CMYK: (20%, 0%, 14%, 35%)
+
+-Font: Gadugi bold
+
+
+Complementary Palette: Below are the websites complementary palette colors
+-Primary Accent - Soft coral - Hex Code #a76f85
+-Secondary Accent - Warm Sand - Hex Code #d9bfa3
+-Highlight - Pale Rose - Hex Code #f2dede
+-Background - Off-White - Hex Code #f8f8f5
+-Text - Charcoal - Hex Code #2e2e2e
