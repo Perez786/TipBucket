@@ -62,7 +62,7 @@ function calculateTips(formData: any) {
       break;
 
     case 'points-system':
-      employeeResults = processedEmployees.map(emp => ({
+      employeeResults = processedEmployees.map((emp: any) => ({
         ...emp,
         earnedTips: totalPointsEarned > 0 ? (emp.totalPoints / totalPointsEarned) * totalTipPool : 0,
       }));
