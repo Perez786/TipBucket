@@ -1,9 +1,21 @@
 'use client';
 import { useState } from 'react';
 
+interface Employee {
+  id: number;
+  name: string;
+  position: string;
+  daysWorked?: { [day: string]: number };
+}
+
+interface EmployeeDataSimpleProps {
+  employees: Employee[];
+  setEmployees: (employees: Employee[]) => void;
+}
+
 const positions = ["Bartender", "Lead Bartender", "Barback", "Lead Barback", "Server", "Back Server", "Lead Server", "Busser", "Runner", "Line Cook", "Lead Chef", "Dishwasher", "Sommelier", "Host", "Other"];
 
-export default function EmployeeDataSimple({ employees, setEmployees }) {
+export default function EmployeeDataSimple({ employees, setEmployees }: EmployeeDataSimpleProps) {
   // Local state for the "Add New Employee" form
   const [name, setName] = useState('');
   const [position, setPosition] = useState('');
@@ -27,7 +39,7 @@ export default function EmployeeDataSimple({ employees, setEmployees }) {
     setPosition('');
   };
 
-  const handleRemoveEmployee = (idToRemove) => {
+  const handleRemoveEmployee = (idToRemove: number) => {
     console.log("--- handleRemoveEmployee triggered ---");
     console.log("ID to remove:", idToRemove);
     console.log("Array BEFORE filter:", JSON.stringify(employees));
