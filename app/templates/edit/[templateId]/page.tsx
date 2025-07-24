@@ -21,7 +21,7 @@ export default function EditTemplatePage() {
   const params = useParams();
   const { templateId } = params;
   
-  const [formData, setFormData] = useState(null);
+  const [formData, setFormData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState('');
