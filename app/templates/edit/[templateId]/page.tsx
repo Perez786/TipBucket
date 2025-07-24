@@ -2,6 +2,12 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 
+interface Employee {
+  id: number;
+  name: string;
+  position: string;
+}
+
 const scenarioOptions = [
   { id: 'hours-worked', name: 'Hours Worked' },
   { id: 'points-system', name: 'Points System' },
@@ -51,7 +57,7 @@ export default function EditTemplatePage() {
 
   const employeePositions = useMemo((): string[] => {
     if (!formData?.employees) return [];
-    return [...new Set(formData.employees.map((emp: any) => emp.position).filter(Boolean))] as string[];
+    return [...new Set(formData.employees.map((emp: Employee) => emp.position).filter(Boolean))] as string[];
   }, [formData?.employees]);
 
   const handleFormChange = (field: string, value: any) => {
@@ -65,7 +71,7 @@ export default function EditTemplatePage() {
   };
   
   const handleRemoveEmployee = (idToRemove: number) => {
-    handleFormChange('employees', formData.employees.filter((emp: any) => emp.id !== idToRemove));
+    handleFormChange('employees', formData.employees.filter((emp: Employee) => emp.id !== idToRemove));
   };
   
   const handleDetailChange = (type: string, key: string, value: string) => {
@@ -143,7 +149,7 @@ export default function EditTemplatePage() {
         <div className="card bg-base-100 shadow-md p-6">
             <h2 className="text-xl font-semibold mb-4">Employee Roster</h2>
             <div className="space-y-2 mb-4">
-                {formData.employees.map((emp) => (
+                {formData.employees.map((emp: Employee) => (
                   <div key={emp.id} className="flex justify-between items-center bg-gray-50 p-2 rounded">
                     <span>{emp.name} - <span className="text-gray-600">{emp.position}</span></span>
                     <button onClick={() => handleRemoveEmployee(emp.id)} className="btn btn-xs btn-error btn-outline">Remove</button>
