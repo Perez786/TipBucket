@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 
 // A reusable card component for our menu options
-const MenuOptionCard = ({ href, title, description }) => (
+const MenuOptionCard = ({ href, title, description }: { href: string; title: string; description: string }) => (
   <Link href={href} className="card bg-base-100 shadow-md hover:shadow-xl transition-shadow duration-300">
     <div className="card-body">
       <h2 className="card-title text-primary">{title}</h2>
