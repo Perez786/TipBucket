@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth-options';
 import Template from '@/models/Template';
 import dbConnect from '@/lib/mongoose';
 
@@ -46,7 +46,7 @@ export async function PUT(
       return NextResponse.json({ message: 'Template not found' }, { status: 404 });
     }
 
-    if (template.userId.toString() !== session.user.id) {
+    if (template.userId.toString() !== (session.user as any)?.id) {
       return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
     }
 
@@ -93,7 +93,7 @@ export async function DELETE(
     }
 
     // Ensure the user owns the template
-    if (template.userId.toString() !== session.user.id) {
+    if (template.userId.toString() !== (session.user as any)?.id) {
       return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
     }
 
