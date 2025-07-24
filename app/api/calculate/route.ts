@@ -165,9 +165,9 @@ employeeResults = employeeResults.map((emp: any) => {
   });
 
 // 7. Daily Breakdown
-const dailyBreakdown = {};
+const dailyBreakdown: any = {};
 
-Object.entries(dailyTips).forEach(([dayKey, dayTips], i) => {
+Object.entries(dailyTips).forEach(([dayKey, dayTips]: [string, any], i) => {
   const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   const dayIndex = parseInt(dayKey.replace('day', '')) - 1;
   const weekday = weekdays[dayIndex % 7];
