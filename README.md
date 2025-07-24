@@ -45,45 +45,6 @@
 - Google OAuth credentials (optional)
 - Email service (Resend API key)
 
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Perez786/TipBucket.git
-   cd TipBucket
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables**
-   Create a `.env.local` file in the root directory:
-   ```env
-   MONGODB_URI=your_mongodb_connection_string
-   NEXTAUTH_SECRET=your_nextauth_secret
-   NEXTAUTH_URL=http://localhost:3000
-   NEXTAUTH_CALLBACK_URL=http://localhost:3000/dashboard
-   FRONTEND_URL=http://localhost:3000
-   
-   # Google OAuth (optional)
-   GOOGLE_CLIENT_ID=your_google_client_id
-   GOOGLE_CLIENT_SECRET=your_google_client_secret
-   
-   # Email service
-   RESEND_API_KEY=your_resend_api_key
-   EMAIL_FROM='TipBucket <noreply@yourdomain.com>'
-   ```
-
-4. **Run the development server**
-   ```bash
-   npm run dev
-   ```
-
-5. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
 ## 📖 Usage Guide
 
 ### Express Flow
@@ -111,61 +72,6 @@
 - **Styling**: Tailwind CSS
 - **Email**: Resend API
 
-### Project Structure
-```
-├── app/                    # Next.js app directory
-│   ├── api/               # API routes
-│   ├── dashboard/         # Main dashboard
-│   ├── express/           # Express flow
-│   ├── templates/         # Template management
-│   └── use-template/      # Template usage flow
-├── components/            # Reusable components
-│   ├── express-flow/      # Express-specific components
-│   ├── template-flow/     # Template-specific components
-│   └── templates/         # Template management components
-├── models/                # MongoDB schemas
-└── lib/                   # Utility functions
-```
-
-## 🔧 Configuration
-
-### Environment Variables
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `MONGODB_URI` | MongoDB connection string | ✅ |
-| `NEXTAUTH_SECRET` | NextAuth encryption secret | ✅ |
-| `NEXTAUTH_URL` | Application URL | ✅ |
-| `GOOGLE_CLIENT_ID` | Google OAuth client ID | ❌ |
-| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | ❌ |
-| `RESEND_API_KEY` | Email service API key | ✅ |
-| `EMAIL_FROM` | Sender email address | ✅ |
-
-### Database Setup
-The application uses MongoDB with the following collections:
-- `users` - User authentication data
-- `templates` - Saved tip distribution templates
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Configure environment variables in Vercel dashboard
-4. Deploy automatically
-
-### Other Platforms
-- **Netlify**: Full Next.js support
-- **Railway**: Great for full-stack apps
-- **Render**: MongoDB-friendly hosting
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -177,9 +83,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Authentication by [NextAuth.js](https://next-auth.js.org/)
 - Database powered by [MongoDB](https://www.mongodb.com/)
 
-## 📞 Support
-
-If you have any questions or need help with setup, please open an issue on GitHub.
 
 ---
 
