@@ -8,7 +8,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Calculation Error:", error);
     return NextResponse.json(
-      { message: "An error occurred during calculation.", error: error.message },
+      { message: "An error occurred during calculation.", error: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
