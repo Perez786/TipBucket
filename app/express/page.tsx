@@ -56,7 +56,7 @@ export default function ExpressPage() { // Renamed from DashboardPage to Express
         setResults(data);
         setStep(prev => prev + 1);
       } catch (err) {
-        setError(err.message);
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
       } finally {
         setIsLoading(false);
       }
