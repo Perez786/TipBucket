@@ -23,7 +23,7 @@ function calculateTips(formData: any) {
   let totalCreditCardTips = 0;
   let totalServiceChargeTips = 0;
 
-  Object.values(dailyTips).forEach(day => {
+  Object.values(dailyTips).forEach((day: any) => {
     totalCreditCardTips += day.creditCardTips || 0;
     totalCashTips += day.cashTips || 0;
     totalServiceChargeTips += day.serviceChargeTips || 0;
