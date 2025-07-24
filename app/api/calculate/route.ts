@@ -94,7 +94,7 @@ function calculateTips(formData: any) {
       const hoursPool = totalTipPool * (hoursPercent / 100);
       const pointsPool = totalTipPool * (pointsPercent / 100);
 
-      employeeResults = processedEmployees.map(emp => {
+      employeeResults = processedEmployees.map((emp: any) => {
         const fromHours = totalHoursWorked > 0 ? (emp.totalHours / totalHoursWorked) * hoursPool : 0;
         const fromPoints = totalPointsEarned > 0 ? (emp.totalPoints / totalPointsEarned) * pointsPool : 0;
         return { ...emp, earnedTips: fromHours + fromPoints };
