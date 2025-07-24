@@ -10,8 +10,8 @@ import ResultsPage from '@/components/template-flow/ResultsPage';
 export default function UseTemplatePage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState(null);
-  const [results, setResults] = useState(null);
+  const [formData, setFormData] = useState<any>(null);
+  const [results, setResults] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isPreparing, setIsPreparing] = useState(true);
   const [error, setError] = useState('');
@@ -32,7 +32,7 @@ export default function UseTemplatePage() {
         const templateData = await response.json();
 
         const numDays = templateData.timeSpan === 'Weekly' ? 7 : 14;
-        const initialDailyTips = {};
+        const initialDailyTips: any = {};
 
         for (let i = 1; i <= numDays; i++) {
           initialDailyTips[`day${i}`] = {
@@ -42,7 +42,7 @@ export default function UseTemplatePage() {
           };
         }
 
-        const hydratedEmployees = templateData.employees.map((emp, index) => ({
+        const hydratedEmployees = templateData.employees.map((emp: any, index: number) => ({
           ...emp,
           id: emp.id || Date.now() + index,
           daysWorked: {}
@@ -95,7 +95,7 @@ export default function UseTemplatePage() {
       case 1:
         return <TimeSpanAndTips formData={formData} setFormData={setFormData} nextStep={nextStep} />;
       case 2:
-        return <EmployeeData formData={formData} setFormData={setFormData} onCalculate={handleCalculate} prevStep={prevStep} nextStep={nextStep} />;
+        return <EmployeeData formData={formData} setFormData={setFormData} onCalculate={handleCalculate} prevStep={prevStep} />;
       case 3:
         return <Scenario formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />;
       case 4:
