@@ -106,7 +106,7 @@ function calculateTips(formData: any) {
   }
 
 // 4. Add Tip Type Breakdown & Hourly Rate
-employeeResults = employeeResults.map(emp => {
+employeeResults = employeeResults.map((emp: any) => {
   const tipRatio = emp.earnedTips / totalTipPool;
   const earnedCreditCardTips = tipRatio * totalCreditCardTips;
   const earnedCashTips = tipRatio * totalCashTips;
