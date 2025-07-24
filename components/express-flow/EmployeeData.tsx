@@ -2,13 +2,32 @@
 
 import React, { useState } from 'react';
 
+interface Employee {
+  id: number;
+  name: string;
+  position: string;
+  daysWorked: { [day: string]: { hours: number | string } };
+}
+
+interface EmployeeDataProps {
+  formData: {
+    employees: Employee[];
+    timeSpan: 'Weekly' | 'Bi-Weekly';
+    [key: string]: any; // for other fields that might be present
+  };
+  setFormData: (data: any) => void;
+  nextStep: () => void;
+  prevStep: () => void;
+  isTemplateMode?: boolean;
+}
+
 const positionOptions = [
   "Bartender", "Lead Bartender", "Barback", "Lead Barback", "Server", 
   "Back Server", "Lead Server", "Busser", "Runner", "Line Cook", 
   "Lead Chef", "Dishwasher", "Sommelier", "Host", "Other"
 ];
 
-const EmployeeData = ({ formData, setFormData, nextStep, prevStep, isTemplateMode = false }) => {
+const EmployeeData: React.FC<EmployeeDataProps> = ({ formData, setFormData, nextStep, prevStep, isTemplateMode = false }) => {
   const [employees, setEmployees] = useState(formData.employees.length > 0 ? formData.employees : [{ id: 1, name: '', position: '', daysWorked: {} }]);
   const dayNames = !isTemplateMode ? [...Array(formData.timeSpan === 'Weekly' ? 7 : 14)].map((_, i) => { 
     const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']; 
@@ -20,23 +39,23 @@ const EmployeeData = ({ formData, setFormData, nextStep, prevStep, isTemplateMod
     setEmployees([...employees, { id: Date.now(), name: '', position: '', daysWorked: {} }]);
   };
 
-  const removeEmployee = (id) => {
+  const removeEmployee = (id: number) => {
     setEmployees(employees.filter(emp => emp.id !== id));
   };
 
-  const handleEmployeeChange = (id, field, value) => {
+  const handleEmployeeChange = (id: number, field: string, value: string) => {
     const updatedEmployees = employees.map(emp => 
       emp.id === id ? { ...emp, [field]: value } : emp
     );
     setEmployees(updatedEmployees);
   };
 
-  const handleDayChange = (empId, dayIndex, isChecked) => {
+  const handleDayChange = (empId: number, dayIndex: string, isChecked: boolean) => {
     const updatedEmployees = employees.map(emp => {
       if (emp.id === empId) {
         const newDaysWorked = { ...emp.daysWorked };
         if (isChecked) {
-          newDaysWorked[dayIndex] = { hours: '' };
+          newDaysWorked[dayIndex] = { hours: 0 };
         } else {
           delete newDaysWorked[dayIndex];
         }
@@ -47,12 +66,12 @@ const EmployeeData = ({ formData, setFormData, nextStep, prevStep, isTemplateMod
     setEmployees(updatedEmployees);
   };
 
-  const handleHoursChange = (empId, dayIndex, hours) => {
+  const handleHoursChange = (empId: number, dayIndex: string, hours: string) => {
     const updatedEmployees = employees.map(emp => {
       if (emp.id === empId) {
         const newDaysWorked = { 
           ...emp.daysWorked,
-          [dayIndex]: { hours: parseFloat(hours) || '' }
+          [dayIndex]: { hours: parseFloat(hours) || 0 }
         };
         return { ...emp, daysWorked: newDaysWorked };
       }
@@ -105,7 +124,7 @@ const EmployeeData = ({ formData, setFormData, nextStep, prevStep, isTemplateMod
                       type="checkbox"
                       id={`day-${employee.id}-${dayIndex}`}
                       checked={!!employee.daysWorked[dayIndex]}
-                      onChange={(e) => handleDayChange(employee.id, dayIndex, e.target.checked)}
+                      onChange={(e) => handleDayChange(employee.id, dayIndex.toString(), e.target.checked)}
                       className="h-4 w-4 text-primary focus:ring-highlight border-gray-300 rounded"
                     />
                     <label htmlFor={`day-${employee.id}-${dayIndex}`} className="ml-2 text-sm">{day}</label>
@@ -114,7 +133,7 @@ const EmployeeData = ({ formData, setFormData, nextStep, prevStep, isTemplateMod
                         type="number"
                         placeholder="Hrs"
                         value={employee.daysWorked[dayIndex].hours}
-                        onChange={(e) => handleHoursChange(employee.id, dayIndex, e.target.value)}
+                        onChange={(e) => handleHoursChange(employee.id, dayIndex.toString(), e.target.value)}
                         className="w-16 ml-2 px-2 py-1 border border-gray-300 rounded-md text-sm"
                       />
                     )}
