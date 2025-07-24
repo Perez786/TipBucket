@@ -1,15 +1,16 @@
 'use client';
 
 import React from 'react';
+import { ResultsPageProps } from '../../types';
 
-const ResultsPage = ({ results, startOver }) => {
+const ResultsPage: React.FC<ResultsPageProps> = ({ results, startOver }) => {
   if (!results) {
     return <div>Loading results...</div>;
   }
 
   const { employeeResults, summary, positionSummary } = results;
 
-  const formatCurrency = (value) =>
+  const formatCurrency = (value: number) =>
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
 
 const downloadCSV = () => {
@@ -153,7 +154,7 @@ const downloadCSV = () => {
             <div className="bg-green-50 p-4 rounded-lg border border-green-200">
               <h4 className="text-md font-medium mb-2 text-green-800">Points Assigned:</h4>
               <ul className="list-disc list-inside text-green-700">
-                {Object.entries(results.rawData.scenarioDetails.points || {}).map(([role, points]) => (
+                {Object.entries(results.rawData.scenarioDetails?.points || {}).map(([role, points]) => (
                   <li key={role}><strong>{role}</strong>: {points} points</li>
                 ))}
               </ul>
@@ -165,7 +166,7 @@ const downloadCSV = () => {
             <div className="bg-purple-50 p-4 rounded-lg border border-purple-200 mt-4">
               <h4 className="text-md font-medium mb-2 text-purple-800">Percentages Applied:</h4>
               <ul className="list-disc list-inside text-purple-700">
-                {Object.entries(results.rawData.scenarioDetails.percentages || {}).map(([role, percentage]) => (
+                {Object.entries(results.rawData.scenarioDetails?.percentages || {}).map(([role, percentage]) => (
                   <li key={role}><strong>{role}</strong>: {percentage}%</li>
                 ))}
               </ul>

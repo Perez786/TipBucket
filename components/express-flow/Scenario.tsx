@@ -11,13 +11,23 @@ const scenarioOptions = [
   { id: 'hybrid', name: 'Hybrid Model' },
 ];
 
+interface ScenarioDetails {
+  points: { [position: string]: number };
+  percentages: { [position: string]: number };
+  hybridSplit: { hours: number; points: number };
+}
+
 interface ScenarioComponentProps extends ScenarioProps {
   submitButtonText?: string;
 }
 
 const Scenario: React.FC<ScenarioComponentProps> = ({ formData, setFormData, nextStep, prevStep, submitButtonText = 'Calculate Tips' }) => {
   const [selectedScenario, setSelectedScenario] = useState(formData.scenario || '');
-  const [details, setDetails] = useState(formData.scenarioDetails || { points: {}, percentages: {}, hybridSplit: { hours: 70, points: 30 } });
+  const [details, setDetails] = useState<ScenarioDetails>({
+    points: formData.scenarioDetails?.points || {},
+    percentages: formData.scenarioDetails?.percentages || {},
+    hybridSplit: formData.scenarioDetails?.hybridSplit || { hours: 70, points: 30 }
+  });
 
   const employeePositions = useMemo(() => 
     [...new Set(formData.employees.map(emp => emp.position).filter(Boolean))]
