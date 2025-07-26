@@ -8,12 +8,22 @@ export async function GET(
   req: Request,
   { params }: { params: { templateId: string } }
 ) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     await dbConnect();
     const template = await Template.findById(params.templateId);
 
     if (!template) {
       return NextResponse.json({ message: 'Template not found' }, { status: 404 });
+    }
+
+    // Ensure the user owns the template
+    if (template.userId.toString() !== (session.user as any)?.id) {
+      return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
     }
 
     return NextResponse.json(template, { status: 200 });
