@@ -37,7 +37,7 @@
 - Real-time calculations
 - Clean, professional interface
 
-## 🚀 Quick Start
+## 🚀 Deployed with Vercel
 
 ### Prerequisites
 - Node.js 18+ 
